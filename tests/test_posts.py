@@ -98,3 +98,25 @@ def test_empty_directory_returns_empty_list():
     with tempfile.TemporaryDirectory() as tmp:
         posts = load_posts(Path(tmp))
     assert posts == []
+
+
+def test_empty_frontmatter_raises():
+    with tempfile.TemporaryDirectory() as tmp:
+        d = Path(tmp)
+        make_post_file(d, "empty-front.md", "---\n---\nsome body\n")
+        with pytest.raises(ValueError, match="YAML mapping"):
+            load_posts(d)
+
+
+def test_invalid_date_type_raises():
+    with tempfile.TemporaryDirectory() as tmp:
+        d = Path(tmp)
+        make_post_file(d, "bad-date.md", """\
+---
+title: Bad Date
+date: not-a-date
+author: Norman
+---
+""")
+        with pytest.raises(ValueError, match="date"):
+            load_posts(d)

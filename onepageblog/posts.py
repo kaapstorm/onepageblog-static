@@ -31,12 +31,16 @@ def _parse_post(path: Path) -> Post:
         raise ValueError(f"{path}: malformed frontmatter")
     _, raw_front, body = parts
     meta = yaml.safe_load(raw_front)
+    if not isinstance(meta, dict):
+        raise ValueError(f"{path}: frontmatter is not a YAML mapping")
     for field in ("title", "date", "author"):
         if field not in meta:
             raise ValueError(f"{path}: missing required frontmatter field '{field}'")
     post_date = meta["date"]
-    if isinstance(post_date, str):
-        post_date = date.fromisoformat(post_date)
+    if not isinstance(post_date, date):
+        raise ValueError(
+            f"{path}: 'date' must be a YYYY-MM-DD date, got {type(post_date).__name__!r}"
+        )
     return Post(
         title=meta["title"],
         date=post_date,
