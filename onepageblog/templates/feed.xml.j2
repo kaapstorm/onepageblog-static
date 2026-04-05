@@ -9,7 +9,7 @@
       <title>{{ post.title }}</title>
       <link>{{ config.base_url }}{{ post.slug }}/</link>
       <guid isPermaLink="true">{{ config.base_url }}{{ post.slug }}/</guid>
-      <pubDate>{{ post.date.strftime('%a, %d %b %Y 00:00:00 +0000') }}</pubDate>
+      <pubDate>{{ post.date | rfc822_date }}</pubDate>
       <author>{{ post.author }}</author>
       <description><![CDATA[{{ post.body_html | safe }}]]></description>
     </item>
