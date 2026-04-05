@@ -47,6 +47,7 @@ def test_render_returns_expected_keys():
     assert set(pages.keys()) == {
         "index.html",
         "feed.xml",
+        "default.css",
         "first-post/index.html",
         "first-post/ajax.html",
         "second-post/index.html",

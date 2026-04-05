@@ -7,42 +7,46 @@
   <link rel="alternate" type="application/rss+xml"
         title="{{ config.site_title }} RSS Feed"
         href="{{ config.base_url }}feed.xml">
+  <link rel="stylesheet" href="{{ config.base_url }}default.css">
   <script src="https://unpkg.com/htmx.org@2.0.4"></script>
   <script defer src="https://unpkg.com/alpinejs@3.14.9/dist/cdn.min.js"></script>
-  <style>[x-cloak] { display: none; }</style>
 </head>
 <body>
-  <header>
-    <h1><a href="{{ config.parent_url }}">{{ config.site_title }}</a></h1>
-  </header>
-  <nav>
-    [<a href="{{ config.base_url }}feed.xml">Feed</a>]
-  </nav>
-  <main>
-    {% for post in posts %}
-    <div class="post" x-data="{ open: false }">
-      <div class="post-header"
-           hx-get="{{ config.base_url }}{{ post.slug }}/ajax.html"
-           hx-target="next .post-body"
-           hx-swap="innerHTML"
-           hx-trigger="click once"
-           role="button"
-           tabindex="0"
-           :aria-expanded="open"
-           @click="open = !open"
-           @keydown.enter="open = !open"
-           @keydown.space.prevent="open = !open">
-        <span aria-hidden="true" x-text="open ? '∧' : '∨'">∨</span>
-        <a href="{{ config.base_url }}{{ post.slug }}/" @click.stop>🔗</a>
-        <h2>{{ post.title }}</h2>
-        <span>by {{ post.author }} | {{ post.date.strftime('%d %b %Y') }}</span>
+  <div class="outer">
+    <header>
+      <h1>{{ config.site_title }}</h1>
+    </header>
+    <nav>
+      [<a href="{{ config.base_url }}feed.xml">Feed</a>]
+    </nav>
+    <main>
+      {% for post in posts %}
+      <div class="post" x-data="{ open: false }">
+        <div class="post-header"
+             hx-get="{{ config.base_url }}{{ post.slug }}/ajax.html"
+             hx-target="next .post-body"
+             hx-swap="innerHTML"
+             hx-trigger="click once"
+             role="button"
+             tabindex="0"
+             :aria-expanded="open"
+             @click="open = !open"
+             @keydown.enter="open = !open"
+             @keydown.space.prevent="open = !open">
+          <span class="toggle-icon" aria-hidden="true" x-text="open ? '∧' : '∨'">∨</span>
+          <a class="permalink-icon" href="{{ config.base_url }}{{ post.slug }}/" @click.stop>🔗</a>
+          <h2 class="post-title">{{ post.title }}</h2>
+          <span class="post-meta">by {{ post.author }} | {{ post.date.strftime('%d %b %Y') }}</span>
+        </div>
+        <div class="post-body" x-show="open" x-cloak></div>
       </div>
-      <div class="post-body" x-show="open" x-cloak></div>
-    </div>
-    {% endfor %}
-  </main>
-  <footer>
-    <a href="{{ config.parent_url }}">← {{ config.parent_url }}</a>
-  </footer>
+      {% endfor %}
+    </main>
+    {% if config.base_path.strip('/') %}
+    <footer>
+      <a href="{{ config.parent_url }}">← {{ config.parent_url }}</a>
+    </footer>
+    {% endif %}
+  </div>
 </body>
 </html>

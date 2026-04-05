@@ -1,7 +1,11 @@
+from pathlib import Path
+
 from jinja2 import Environment, PackageLoader
 
 from .config import Config
 from .posts import Post
+
+_STATIC_DIR = Path(__file__).parent / "static"
 
 _DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 _MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
@@ -20,6 +24,9 @@ def render(config: Config, posts: list[Post]) -> dict[str, str]:
     env.filters["rfc822_date"] = _rfc822_date
 
     pages: dict[str, str] = {}
+
+    for css_file in _STATIC_DIR.glob("*.css"):
+        pages[css_file.name] = css_file.read_text(encoding="utf-8")
 
     pages["index.html"] = env.get_template("index.html.j2").render(
         config=config, posts=posts

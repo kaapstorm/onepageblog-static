@@ -1,0 +1,130 @@
+/**
+ *  Colour palette:
+ *      lightsteelblue
+ *      maroon
+ *      darkmagenta
+ *      mintcream
+ *      darkslategray
+ */
+
+a {
+    color: darkmagenta;
+}
+
+body {
+    margin: 0;
+    text-align: center;
+    color: darkslategray;
+    background-color: lightsteelblue;
+}
+
+code {
+    background-color: white;
+    color: black;
+    padding: 5px;
+    border-radius: 3px;
+    border: 1px solid lightsteelblue;
+}
+
+dt {
+    margin-top: 1em;
+}
+
+footer {
+    padding-top: 2em;
+    font-size: small;
+}
+
+h1 {
+    color: maroon;
+}
+
+h2 {
+    font-size: 1.2em;
+    color: darkmagenta;
+}
+
+h3 {
+    font-family: sans-serif;
+    font-size: 1em;
+}
+
+h4 {
+    font-family: sans-serif;
+    font-size: 0.9em;
+}
+
+nav {
+    font-size: small;
+}
+
+pre code {
+    display: block;
+    overflow: auto;
+    padding: 5px;
+    border-radius: 3px;
+    border: 1px solid lightsteelblue;
+}
+
+.outer {
+    margin: auto;
+    text-align: left;
+    width: 500px;
+    padding: 5px;
+}
+
+.post {
+    border-left: 1px solid darkslategray;
+    padding-left: 2px;
+    margin-bottom: 0.5em;
+}
+
+.post-header {
+    cursor: pointer;
+    user-select: none;
+}
+
+h2.post-title {
+    display: inline;
+    margin: 0;
+}
+
+.toggle-icon {
+    font-family: monospace;
+    font-size: 0.9em;
+    color: darkslategray;
+    margin-right: 0.2em;
+}
+
+.permalink-icon {
+    font-size: 0.85em;
+    text-decoration: none;
+    margin-right: 0.2em;
+}
+
+.post-meta {
+    font-family: sans-serif;
+    font-size: 0.75em;
+    font-weight: normal;
+    color: darkslategray;
+    margin-left: 0.4em;
+}
+
+.post-body {
+    background-color: mintcream;
+    padding: 1em 1em 2em 1em;
+    border-radius: 3px;
+}
+
+.post-body blockquote {
+    font-style: italic;
+}
+
+.post-link {
+    font-size: small;
+    color: darkslategray;
+}
+
+[x-cloak] {
+    display: none !important;
+}
