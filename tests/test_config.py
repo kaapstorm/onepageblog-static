@@ -61,6 +61,18 @@ def test_base_url_normalises_slashes():
     assert config.base_url == "https://example.com/blog/"
 
 
+def test_base_url_empty_base_path():
+    config = Config(
+        site_title="T",
+        site_description="D",
+        parent_url="https://example.com",
+        base_path="",
+        posts_dir=Path("/tmp/posts"),
+        output_dir=Path("/tmp/output"),
+    )
+    assert config.base_url == "https://example.com/"
+
+
 def test_missing_field_raises():
     with tempfile.TemporaryDirectory() as tmp:
         path = Path(tmp) / "config.toml"

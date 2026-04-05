@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from pathlib import Path
 import tomllib
+from urllib.parse import urljoin
 
 
 @dataclass
@@ -14,7 +15,9 @@ class Config:
 
     @property
     def base_url(self) -> str:
-        return self.parent_url.rstrip("/") + "/" + self.base_path.strip("/") + "/"
+        parent = self.parent_url.rstrip("/") + "/"
+        path = self.base_path.strip("/")
+        return urljoin(parent, path + "/" if path else "")
 
 
 def load_config(path: Path) -> Config:
