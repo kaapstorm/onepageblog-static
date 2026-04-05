@@ -26,8 +26,13 @@
            hx-target="next .post-body"
            hx-swap="innerHTML"
            hx-trigger="click once"
-           @click="open = !open">
-        <span x-text="open ? '∧' : '∨'">∨</span>
+           role="button"
+           tabindex="0"
+           :aria-expanded="open"
+           @click="open = !open"
+           @keydown.enter="open = !open"
+           @keydown.space.prevent="open = !open">
+        <span aria-hidden="true" x-text="open ? '∧' : '∨'">∨</span>
         <a href="{{ config.base_url }}{{ post.slug }}/" @click.stop>🔗</a>
         <h2>{{ post.title }}</h2>
         <span>by {{ post.author }} | {{ post.date.strftime('%d %b %Y') }}</span>

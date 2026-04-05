@@ -4,12 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{ config.site_title }} – {{ post.title }}</title>
+  <link rel="alternate" type="application/rss+xml"
+        title="{{ config.site_title }} RSS Feed"
+        href="{{ config.base_url }}feed.xml">
 </head>
 <body>
   <header>
     <h1><a href="{{ config.base_url }}">{{ config.site_title }}</a></h1>
     <h2>{{ post.title }}</h2>
-    <h3>{{ post.date.strftime('%d %b %Y') }} | {{ post.author }}</h3>
+    <p class="post-meta">{{ post.date.strftime('%d %b %Y') }} | {{ post.author }}</p>
   </header>
   <main>
     {{ post.body_html | safe }}
