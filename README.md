@@ -9,7 +9,9 @@ subdirectory of an existing site.
 Requires Python 3.11+.
 
 ```bash
-pip install -e .
+uv venv
+source .venv/bin/activate
+uv pip install -e .
 ```
 
 This installs the `onepageblog` command. Alternatively, run without
@@ -94,6 +96,6 @@ specified by `base_path`.
 ## Development
 
 ```bash
-pip install -e ".[dev]"
+uv pip install -e ".[dev]"
 pytest
 ```
