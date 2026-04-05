@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>{{ config.site_title }}</title>
+    <link>{{ config.base_url }}</link>
+    <description>{{ config.site_description }}</description>
+    {% for post in posts %}
+    <item>
+      <title>{{ post.title }}</title>
+      <link>{{ config.base_url }}{{ post.slug }}/</link>
+      <pubDate>{{ post.date.strftime('%a, %d %b %Y 00:00:00 +0000') }}</pubDate>
+      <author>{{ post.author }}</author>
+      <description><![CDATA[{{ post.body_html | safe }}]]></description>
+    </item>
+    {% endfor %}
+  </channel>
+</rss>

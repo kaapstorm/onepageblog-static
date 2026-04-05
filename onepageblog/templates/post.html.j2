@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ config.site_title }} – {{ post.title }}</title>
+</head>
+<body>
+  <header>
+    <h1><a href="{{ config.base_url }}">{{ config.site_title }}</a></h1>
+    <h2>{{ post.title }}</h2>
+    <h3>{{ post.date.strftime('%d %b %Y') }} | {{ post.author }}</h3>
+  </header>
+  <main>
+    {{ post.body_html | safe }}
+  </main>
+  <p>[<a href="{{ config.base_url }}">Back To List</a>]</p>
+</body>
+</html>
