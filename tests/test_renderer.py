@@ -129,3 +129,19 @@ def test_render_returns_bytes_for_binary_files():
     content = pages[key]
     assert isinstance(content, bytes), f"{key} should be bytes"
     assert content[:4] == b"wOF2", f"{key} does not have WOFF2 magic bytes"
+
+
+def test_index_has_no_cdn_dependencies():
+    pages = render(config(), posts())
+    assert "unpkg.com" not in pages["index.html"]
+    assert "cdn.jsdelivr.net" not in pages["index.html"]
+
+
+def test_footer_strips_protocol_from_parent_url():
+    pages = render(config(), posts())
+    # The config fixture uses parent_url="https://example.com" and base_path="/blog/"
+    # Footer is only rendered when base_path is non-empty
+    # Check that the footer link contains the domain without protocol
+    assert "← example.com" in pages["index.html"]
+    # Verify it's rendered as a footer link, not with protocol
+    assert '<a href="https://example.com">← example.com</a>' in pages["index.html"]

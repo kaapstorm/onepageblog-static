@@ -25,7 +25,7 @@ Dataclass pipeline — each stage takes plain data in, returns plain data out:
 ```
 load_config(path)              → Config
 load_posts(config.posts_dir)   → list[Post]
-render(config, posts)          → dict[str, str]  # {relative_path: content}
+render(config, posts)          → dict[str, str | bytes]  # {relative_path: content}
 write(pages, config.output_dir)
 ```
 
