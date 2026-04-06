@@ -2,7 +2,7 @@
 :root {
   --bg:         #faf9f6;
   --text:       #1c1917;
-  --text-muted: #78716c;
+  --text-muted: #6b6460;
   --border:     #e7e5e4;
   --post-bg:    #f3f2ef;
 }
@@ -57,6 +57,11 @@ nav a:hover {
   border-bottom-color: var(--text);
 }
 
+nav a:focus-visible {
+  outline: 2px solid var(--text-muted);
+  outline-offset: 3px;
+}
+
 /* Post list */
 .post {
   margin-bottom: 2.5rem;
@@ -77,6 +82,12 @@ nav a:hover {
 
 .post-header:hover .post-title {
   opacity: 0.65;
+}
+
+.post-header:focus-visible {
+  outline: 2px solid var(--text-muted);
+  outline-offset: 4px;
+  border-radius: 2px;
 }
 
 h2.post-title {
@@ -210,6 +221,13 @@ footer a {
 
 footer a:hover {
   color: var(--text);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  h2.post-title,
+  .htmx-indicator {
+    transition: none;
+  }
 }
 
 /* Alpine cloak */
