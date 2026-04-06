@@ -16,17 +16,23 @@ def _rfc822_date(d):
     return f"{_DAYS[d.weekday()]}, {d.day:02d} {_MONTHS[d.month - 1]} {d.year} 00:00:00 +0000"
 
 
-def render(config: Config, posts: list[Post]) -> dict[str, str]:
+def render(config: Config, posts: list[Post]) -> dict[str, str | bytes]:
     env = Environment(
         loader=PackageLoader("onepageblog", "templates"),
         autoescape=True,
     )
     env.filters["rfc822_date"] = _rfc822_date
 
-    pages: dict[str, str] = {}
+    pages: dict[str, str | bytes] = {}
 
-    for css_file in _STATIC_DIR.glob("*.css"):
-        pages[css_file.name] = css_file.read_text(encoding="utf-8")
+    for static_file in _STATIC_DIR.rglob("*"):
+        if not static_file.is_file():
+            continue
+        key = static_file.relative_to(_STATIC_DIR).as_posix()
+        try:
+            pages[key] = static_file.read_text(encoding="utf-8")
+        except UnicodeDecodeError:
+            pages[key] = static_file.read_bytes()
 
     pages["index.html"] = env.get_template("index.html.j2").render(
         config=config, posts=posts

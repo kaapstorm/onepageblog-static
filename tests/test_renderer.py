@@ -44,15 +44,19 @@ def posts():
 
 def test_render_returns_expected_keys():
     pages = render(config(), posts())
-    assert set(pages.keys()) == {
+    expected = {
         "index.html",
         "feed.xml",
         "default.css",
+        "fonts.css",
+        "htmx.min.js",
+        "alpinejs.min.js",
         "first-post/index.html",
         "first-post/ajax.html",
         "second-post/index.html",
         "second-post/ajax.html",
     }
+    assert expected <= set(pages.keys())
 
 
 def test_index_contains_post_titles():
@@ -115,3 +119,18 @@ def test_feed_pubdate_rfc822_format():
     assert "<pubDate>Fri, 15 Mar 2024 00:00:00 +0000</pubDate>" in feed
     # 2024-01-01 is a Monday
     assert "<pubDate>Mon, 01 Jan 2024 00:00:00 +0000</pubDate>" in feed
+
+
+def test_render_includes_font_files():
+    pages = render(config(), posts())
+    woff2_keys = [k for k in pages if k.endswith(".woff2")]
+    assert len(woff2_keys) >= 5, f"Expected at least 5 .woff2 files, got: {woff2_keys}"
+
+
+def test_render_returns_bytes_for_binary_files():
+    pages = render(config(), posts())
+    for key, content in pages.items():
+        if key.endswith(".woff2"):
+            assert isinstance(content, bytes), f"{key} should be bytes"
+        elif key.endswith((".html", ".xml", ".css", ".js")):
+            assert isinstance(content, str), f"{key} should be str"

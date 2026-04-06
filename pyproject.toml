@@ -21,5 +21,8 @@ dev = [
 [project.scripts]
 onepageblog = "onepageblog.cli:main"
 
+[tool.setuptools.packages.find]
+include = ["onepageblog*"]
+
 [tool.setuptools.package-data]
 onepageblog = ["templates/*", "static/*", "static/fonts/*"]
