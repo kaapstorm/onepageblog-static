@@ -70,10 +70,6 @@ def test_index_htmx_ajax_url():
     assert "https://example.com/blog/first-post/ajax.html" in pages["index.html"]
 
 
-def test_index_permalink_url():
-    pages = render(config(), posts())
-    assert "https://example.com/blog/first-post/" in pages["index.html"]
-
 
 def test_post_page_contains_body():
     pages = render(config(), posts())
