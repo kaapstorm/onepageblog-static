@@ -129,8 +129,8 @@ def test_render_includes_font_files():
 
 def test_render_returns_bytes_for_binary_files():
     pages = render(config(), posts())
-    for key, content in pages.items():
-        if key.endswith(".woff2"):
-            assert isinstance(content, bytes), f"{key} should be bytes"
-        elif key.endswith((".html", ".xml", ".css", ".js")):
-            assert isinstance(content, str), f"{key} should be str"
+    key = "fonts/lora-latin-400-normal.woff2"
+    assert key in pages, "Expected lora-latin-400-normal.woff2 in rendered pages"
+    content = pages[key]
+    assert isinstance(content, bytes), f"{key} should be bytes"
+    assert content[:4] == b"wOF2", f"{key} does not have WOFF2 magic bytes"

@@ -32,6 +32,7 @@ def render(config: Config, posts: list[Post]) -> dict[str, str | bytes]:
         try:
             pages[key] = static_file.read_text(encoding="utf-8")
         except UnicodeDecodeError:
+            # Binary file (e.g. woff2 font): serve as bytes unchanged.
             pages[key] = static_file.read_bytes()
 
     pages["index.html"] = env.get_template("index.html.j2").render(

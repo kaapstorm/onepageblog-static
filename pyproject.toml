@@ -22,6 +22,7 @@ dev = [
 onepageblog = "onepageblog.cli:main"
 
 [tool.setuptools.packages.find]
+# Prevent setuptools from discovering packages inside node_modules/ at build time.
 include = ["onepageblog*"]
 
 [tool.setuptools.package-data]
