@@ -46,6 +46,6 @@ def _parse_post(path: Path) -> Post:
         date=post_date,
         author=meta["author"],
         slug=path.stem,
-        body_html=markdown.markdown(body.strip()),
+        body_html=markdown.markdown(body.strip(), extensions=["extra"]),
         source_path=path,
     )
