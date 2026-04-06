@@ -1,0 +1,14 @@
+{
+  "name": "onepageblog-static",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "node scripts/build-assets.js"
+  },
+  "dependencies": {
+    "@fontsource/lora": "^5.0.0",
+    "@fontsource/nunito": "^5.0.0",
+    "alpinejs": "^3.14.9",
+    "htmx.org": "^2.0.4"
+  }
+}

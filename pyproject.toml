@@ -22,4 +22,4 @@ dev = [
 onepageblog = "onepageblog.cli:main"
 
 [tool.setuptools.package-data]
-onepageblog = ["templates/*", "static/*"]
+onepageblog = ["templates/*", "static/*", "static/fonts/*"]
