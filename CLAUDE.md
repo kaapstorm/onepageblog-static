@@ -12,6 +12,12 @@ commands.
 - Generate a site: `uv run onepageblog path/to/config.toml`
   Or: `uv run python -m onepageblog path/to/config.toml`
 
+Static assets (fonts, HTMX, Alpine.js) are pre-built and committed to
+`onepageblog/static/`. To rebuild them after updating npm dependencies:
+
+- Install npm deps: `npm install`
+- Rebuild assets: `npm run build`
+
 ## Architecture
 
 Dataclass pipeline — each stage takes plain data in, returns plain data out:
