@@ -24,7 +24,7 @@
       {% for post in posts %}
       <div class="post" x-data="{ open: false }">
         <div class="post-header"
-             hx-get="{{ config.base_url }}{{ post.slug }}/ajax.html"
+             hx-get="{{ config.base_url }}posts/{{ post.slug }}/ajax.html"
              hx-target="next .post-body"
              hx-swap="innerHTML"
              hx-trigger="click once"
@@ -43,11 +43,6 @@
       </div>
       {% endfor %}
     </main>
-    {% if config.base_path.strip('/') %}
-    <footer>
-      <a href="{{ config.parent_url }}">← {{ config.parent_url.split('//')[-1].rstrip('/') }}</a>
-    </footer>
-    {% endif %}
   </div>
 </body>
 </html>

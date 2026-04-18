@@ -43,10 +43,10 @@ def render(config: Config, posts: list[Post]) -> dict[str, str | bytes]:
     )
 
     for post in posts:
-        pages[f"{post.slug}/index.html"] = env.get_template("post.html.j2").render(
+        pages[f"posts/{post.slug}/index.html"] = env.get_template("post.html.j2").render(
             config=config, post=post
         )
-        pages[f"{post.slug}/ajax.html"] = env.get_template("ajax.html.j2").render(
+        pages[f"posts/{post.slug}/ajax.html"] = env.get_template("ajax.html.j2").render(
             config=config, post=post
         )
 

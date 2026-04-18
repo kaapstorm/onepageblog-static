@@ -13,8 +13,7 @@ def config():
     yield Config(
         site_title="Test Blog",
         site_description="A test blog",
-        parent_url="https://example.com",
-        base_path="/blog/",
+        site_url="https://example.com",
         posts_dir=Path("/tmp/posts"),
         output_dir=Path("/tmp/output"),
     )
@@ -51,10 +50,10 @@ def test_render_returns_expected_keys():
         "fonts.css",
         "htmx.min.js",
         "alpinejs.min.js",
-        "first-post/index.html",
-        "first-post/ajax.html",
-        "second-post/index.html",
-        "second-post/ajax.html",
+        "posts/first-post/index.html",
+        "posts/first-post/ajax.html",
+        "posts/second-post/index.html",
+        "posts/second-post/ajax.html",
     }
     assert expected <= set(pages.keys())
 
@@ -67,35 +66,35 @@ def test_index_contains_post_titles():
 
 def test_index_htmx_ajax_url():
     pages = render(config(), posts())
-    assert "https://example.com/blog/first-post/ajax.html" in pages["index.html"]
+    assert "https://example.com/posts/first-post/ajax.html" in pages["index.html"]
 
 
 def test_post_page_contains_body():
     pages = render(config(), posts())
-    assert "<p>Hello world.</p>" in pages["first-post/index.html"]
+    assert "<p>Hello world.</p>" in pages["posts/first-post/index.html"]
 
 
 def test_post_page_has_back_link():
     pages = render(config(), posts())
-    assert "https://example.com/blog/" in pages["first-post/index.html"]
+    assert "https://example.com/" in pages["posts/first-post/index.html"]
 
 
 def test_ajax_contains_body_only():
     pages = render(config(), posts())
-    assert "<p>Hello world.</p>" in pages["first-post/ajax.html"]
-    assert "<!DOCTYPE html>" not in pages["first-post/ajax.html"]
+    assert "<p>Hello world.</p>" in pages["posts/first-post/ajax.html"]
+    assert "<!DOCTYPE html>" not in pages["posts/first-post/ajax.html"]
 
 
 def test_ajax_contains_permalink():
     pages = render(config(), posts())
-    assert "https://example.com/blog/first-post/" in pages["first-post/ajax.html"]
+    assert "https://example.com/posts/first-post/" in pages["posts/first-post/ajax.html"]
 
 
 def test_feed_contains_post_items():
     pages = render(config(), posts())
     feed = pages["feed.xml"]
     assert "<title>First Post</title>" in feed
-    assert "<link>https://example.com/blog/first-post/</link>" in feed
+    assert "<link>https://example.com/posts/first-post/</link>" in feed
     assert "<![CDATA[<p>Hello world.</p>]]>" in feed
 
 
@@ -103,7 +102,7 @@ def test_feed_channel_fields():
     pages = render(config(), posts())
     feed = pages["feed.xml"]
     assert "<title>Test Blog</title>" in feed
-    assert "<link>https://example.com/blog/</link>" in feed
+    assert "<link>https://example.com/</link>" in feed
     assert "<description>A test blog</description>" in feed
 
 
@@ -137,11 +136,3 @@ def test_index_has_no_cdn_dependencies():
     assert "cdn.jsdelivr.net" not in pages["index.html"]
 
 
-def test_footer_strips_protocol_from_parent_url():
-    pages = render(config(), posts())
-    # The config fixture uses parent_url="https://example.com" and base_path="/blog/"
-    # Footer is only rendered when base_path is non-empty
-    # Check that the footer link contains the domain without protocol
-    assert "← example.com" in pages["index.html"]
-    # Verify it's rendered as a footer link, not with protocol
-    assert '<a href="https://example.com">← example.com</a>' in pages["index.html"]

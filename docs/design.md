@@ -1,8 +1,9 @@
 # onepageblog-static Design
 
 A static site generator for a one-page blog. Posts are written in Markdown,
-the output is a directory of static HTML/XML files suitable for hosting under
-a subdirectory of an existing site.
+the output is a directory of static HTML/XML files. The landing page is a
+one-page listing of all posts, and each post also has its own permalink
+under `posts/`.
 
 ## Overview
 
@@ -55,14 +56,13 @@ pyproject.toml       # [console_scripts] onepageblog = onepageblog.cli:main
 class Config:
     site_title: str
     site_description: str
-    parent_url: str        # e.g. "https://example.com"
-    base_path: str         # e.g. "/blog/"
+    site_url: str          # e.g. "https://example.com"
     posts_dir: Path
     output_dir: Path
 
     @property
     def base_url(self) -> str:
-        return self.parent_url.rstrip("/") + "/" + self.base_path.lstrip("/")
+        return self.site_url.rstrip("/") + "/"
 
 
 @dataclass
@@ -100,27 +100,26 @@ required frontmatter fields raise a clear error with the source path.
 ```toml
 site_title = "Norman's Blog"
 site_description = "Thoughts on things"
-parent_url = "https://example.com"
-base_path = "/blog/"
-posts_dir = "posts"
-output_dir = "output"
+site_url = "https://example.com"
 ```
 
-`posts_dir` and `output_dir` are resolved relative to the config file's
-location, so `onepageblog config.toml` works from any directory.
+`posts_dir` and `output_dir` are optional (defaulting to `posts` and
+`_output`) and are resolved relative to the config file's location, so
+`onepageblog config.toml` works from any directory.
 
 ## Output Structure
 
 ```
-output/
+_output/
   index.html              # main one-page listing
   feed.xml                # RSS 2.0 feed
-  my-post/
-    index.html            # standalone permalink page
-    ajax.html             # HTMX partial (post body only, no <html> wrapper)
-  another-post/
-    index.html
-    ajax.html
+  posts/
+    my-post/
+      index.html          # standalone permalink page
+      ajax.html           # HTMX partial (post body only, no <html> wrapper)
+    another-post/
+      index.html
+      ajax.html
 ```
 
 ## Frontend: HTMX + Alpine.js
@@ -133,12 +132,12 @@ subsequent toggles are Alpine.js show/hide only.
 <div x-data="{ open: false }">
   <div @click="open = !open" style="cursor: pointer">
     <span x-text="open ? '∧' : '∨'"></span>
-    <a href="/blog/my-post/">🔗</a>
+    <a href="/posts/my-post/">🔗</a>
     <h2>My Post</h2>
     <span>by Norman | 15 Mar 2024</span>
   </div>
   <div x-show="open"
-       hx-get="/blog/my-post/ajax.html"
+       hx-get="/posts/my-post/ajax.html"
        hx-trigger="click[!open] from:previous div"
        hx-swap="innerHTML">
   </div>
@@ -147,7 +146,7 @@ subsequent toggles are Alpine.js show/hide only.
 
 `ajax.html` contains only the rendered post body. `post/index.html` is a
 full standalone page for direct linking, showing the same body with a
-"Back to list" link pointing to `base_path`.
+"Back to list" link pointing to the site root.
 
 ## RSS Feed
 
@@ -160,7 +159,7 @@ full standalone page for direct linking, showing the same body with a
 Per-item fields:
 
 - `<title>` — post title
-- `<link>` — absolute URL: `base_url/slug/`
+- `<link>` — absolute URL: `base_url/posts/slug/`
 - `<pubDate>` — post date in RFC 2822 format
 - `<author>` — post author
 - `<description>` — full post body HTML in a CDATA block

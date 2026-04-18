@@ -7,8 +7,8 @@
     {% for post in posts %}
     <item>
       <title>{{ post.title }}</title>
-      <link>{{ config.base_url }}{{ post.slug }}/</link>
-      <guid isPermaLink="true">{{ config.base_url }}{{ post.slug }}/</guid>
+      <link>{{ config.base_url }}posts/{{ post.slug }}/</link>
+      <guid isPermaLink="true">{{ config.base_url }}posts/{{ post.slug }}/</guid>
       <pubDate>{{ post.date | rfc822_date }}</pubDate>
       <author>{{ post.author }}</author>
       <description><![CDATA[{{ post.body_html | safe }}]]></description>
