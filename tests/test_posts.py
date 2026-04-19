@@ -123,6 +123,14 @@ def test_empty_frontmatter_raises():
             load_posts(d)
 
 
+def test_leading_bom_and_whitespace_are_tolerated():
+    with tempfile.TemporaryDirectory() as tmp:
+        d = Path(tmp)
+        make_post_file(d, "bom.md", "\ufeff\n---\ntitle: BOM\ndate: 2024-01-01\n---\nBody.\n")
+        posts = load_posts(d)
+    assert posts[0].title == "BOM"
+
+
 def test_datetime_date_is_rejected():
     with tempfile.TemporaryDirectory() as tmp:
         d = Path(tmp)

@@ -23,7 +23,7 @@ def load_posts(posts_dir: Path) -> list[Post]:
 
 
 def _parse_post(path: Path) -> Post:
-    text = path.read_text(encoding="utf-8")
+    text = path.read_text(encoding="utf-8-sig").lstrip()
     if not text.startswith("---"):
         raise ValueError(f"{path}: missing frontmatter")
     parts = text.split("---", 2)
