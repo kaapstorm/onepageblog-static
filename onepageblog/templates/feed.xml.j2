@@ -10,7 +10,8 @@
       <link>{{ config.base_url }}posts/{{ post.slug }}/</link>
       <guid isPermaLink="true">{{ config.base_url }}posts/{{ post.slug }}/</guid>
       <pubDate>{{ post.date | rfc822_date }}</pubDate>
-      <author>{{ post.author }}</author>
+      {% set author = post.author or config.default_author %}
+      {% if author %}<author>{{ author }}</author>{% endif %}
       <description><![CDATA[{{ post.body_html | safe }}]]></description>
     </item>
     {% endfor %}

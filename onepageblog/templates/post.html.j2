@@ -15,7 +15,12 @@
     <header class="page-header">
       <h1>{{ config.site_title }}</h1>
       <h2>{{ post.title }}</h2>
-      <span class="post-meta">{{ post.date.strftime('%d %b %Y') }}</span>
+      <span class="post-meta">
+        {{ post.date.strftime('%d %b %Y') }}
+        {% if post.author and post.author != config.default_author %}
+        by {{ post.author }}
+        {% endif %}
+      </span>
     </header>
     <main>
       <div class="post-body">

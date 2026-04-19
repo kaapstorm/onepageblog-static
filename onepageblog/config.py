@@ -10,6 +10,7 @@ class Config:
     site_url: str
     posts_dir: Path
     output_dir: Path
+    default_author: str | None = None
 
     @property
     def base_url(self) -> str:
@@ -27,4 +28,5 @@ def load_config(path: Path) -> Config:
         site_url=data["site_url"],
         posts_dir=(base / data.get("posts_dir", "posts")).resolve(),
         output_dir=(base / data.get("output_dir", "_output")).resolve(),
+        default_author=data.get("default_author"),
     )

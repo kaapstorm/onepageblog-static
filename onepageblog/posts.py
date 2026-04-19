@@ -10,7 +10,7 @@ import yaml
 class Post:
     title: str
     date: date
-    author: str
+    author: str | None
     slug: str
     body_html: str
     source_path: Path
@@ -33,7 +33,7 @@ def _parse_post(path: Path) -> Post:
     meta = yaml.safe_load(raw_front)
     if not isinstance(meta, dict):
         raise ValueError(f"{path}: frontmatter is not a YAML mapping")
-    for field in ("title", "date", "author"):
+    for field in ("title", "date"):
         if field not in meta:
             raise ValueError(f"{path}: missing required frontmatter field '{field}'")
     post_date = meta["date"]
@@ -44,7 +44,7 @@ def _parse_post(path: Path) -> Post:
     return Post(
         title=meta["title"],
         date=post_date,
-        author=meta["author"],
+        author=meta.get("author"),
         slug=path.stem,
         body_html=markdown.markdown(body.strip(), extensions=["extra"]),
         source_path=path,

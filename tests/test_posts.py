@@ -78,12 +78,27 @@ def test_missing_frontmatter_field_raises():
         d = Path(tmp)
         make_post_file(d, "bad.md", """\
 ---
-title: No Author
+author: Norman
 date: 2024-01-01
 ---
 """)
-        with pytest.raises(ValueError, match="author"):
+        with pytest.raises(ValueError, match="title"):
             load_posts(d)
+
+
+def test_author_is_optional():
+    with tempfile.TemporaryDirectory() as tmp:
+        d = Path(tmp)
+        make_post_file(d, "no-author.md", """\
+---
+title: Anonymous
+date: 2024-01-01
+---
+
+Body.
+""")
+        posts = load_posts(d)
+    assert posts[0].author is None
 
 
 def test_missing_frontmatter_block_raises():

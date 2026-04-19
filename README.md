@@ -46,13 +46,18 @@ site_url = "https://example.com"
 `posts_dir` and `output_dir` are optional and resolved relative to the
 config file. They default to `posts` and `_output` respectively.
 
+`default_author` is also optional. When set, posts without an `author`
+field are attributed to the default author silently. A post's `author`
+frontmatter is only shown in the post header when it differs from
+`default_author`.
+
 **Post format** (`posts/my-first-post.md`):
 
 ```markdown
 ---
 title: My First Post
 date: 2024-03-15
-author: Your Name
+author: Your Name   # optional; see default_author in config
 ---
 
 Post content goes here. Markdown is supported.

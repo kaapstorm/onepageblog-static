@@ -36,7 +36,12 @@
              @keydown.enter="open = !open"
              @keydown.space.prevent="open = !open">
           <h2 class="post-title">{{ post.title }}</h2>
-          <span class="post-meta">{{ post.date.strftime('%d %b %Y') }}</span>
+          <span class="post-meta">
+            {{ post.date.strftime('%d %b %Y') }}
+            {% if post.author and post.author != config.default_author %}
+            by {{ post.author }}
+            {% endif %}
+          </span>
         </div>
         <p class="htmx-indicator" id="{{ post.slug }}-loading" aria-live="polite">Loading…</p>
         <div class="post-body" x-show="open" x-cloak></div>
