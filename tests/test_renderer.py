@@ -5,7 +5,7 @@ from unmagic import fixture
 
 from onepageblog.config import Config
 from onepageblog.posts import Post
-from onepageblog.renderer import render
+from onepageblog.renderer import copy_static, render
 
 
 @fixture
@@ -46,16 +46,12 @@ def test_render_returns_expected_keys():
     expected = {
         "index.html",
         "feed.xml",
-        "default.css",
-        "fonts.css",
-        "htmx.min.js",
-        "alpinejs.min.js",
         "posts/first-post/index.html",
         "posts/first-post/ajax.html",
         "posts/second-post/index.html",
         "posts/second-post/ajax.html",
     }
-    assert expected <= set(pages.keys())
+    assert expected == set(pages.keys())
 
 
 def test_index_contains_post_titles():
@@ -115,19 +111,17 @@ def test_feed_pubdate_rfc822_format():
     assert "<pubDate>Mon, 01 Jan 2024 00:00:00 +0000</pubDate>" in feed
 
 
-def test_render_includes_font_files():
-    pages = render(config(), posts())
-    woff2_keys = [k for k in pages if k.endswith(".woff2")]
-    assert len(woff2_keys) >= 5, f"Expected at least 5 .woff2 files, got: {woff2_keys}"
-
-
-def test_render_returns_bytes_for_binary_files():
-    pages = render(config(), posts())
-    key = "fonts/lora-latin-400-normal.woff2"
-    assert key in pages, "Expected lora-latin-400-normal.woff2 in rendered pages"
-    content = pages[key]
-    assert isinstance(content, bytes), f"{key} should be bytes"
-    assert content[:4] == b"wOF2", f"{key} does not have WOFF2 magic bytes"
+def test_copy_static_copies_assets(tmp_path):
+    count = copy_static(tmp_path)
+    assert count >= 5
+    assert (tmp_path / "default.css").is_file()
+    assert (tmp_path / "fonts.css").is_file()
+    assert (tmp_path / "htmx.min.js").is_file()
+    assert (tmp_path / "alpinejs.min.js").is_file()
+    woff2 = list(tmp_path.rglob("*.woff2"))
+    assert len(woff2) >= 5
+    with (tmp_path / "fonts" / "lora-latin-400-normal.woff2").open("rb") as f:
+        assert f.read(4) == b"wOF2"
 
 
 def test_index_has_no_cdn_dependencies():

@@ -43,9 +43,3 @@ def test_write_creates_output_dir_if_missing():
         assert (d / "index.html").read_text() == "hello"
 
 
-def test_write_handles_binary_content():
-    with tempfile.TemporaryDirectory() as tmp:
-        d = Path(tmp)
-        binary_data = bytes(range(256))
-        write({"fonts/test.woff2": binary_data}, d)
-        assert (d / "fonts" / "test.woff2").read_bytes() == binary_data

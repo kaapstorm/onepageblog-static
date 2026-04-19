@@ -5,7 +5,7 @@ from pathlib import Path
 
 from .config import load_config
 from .posts import load_posts
-from .renderer import render
+from .renderer import copy_static, render
 from .writer import write
 
 
@@ -31,4 +31,5 @@ def main() -> None:
 
     pages = render(config, posts)
     write(pages, config.output_dir)
-    print(f"Generated {len(pages)} files in {config.output_dir}")
+    static_count = copy_static(config.output_dir)
+    print(f"Generated {len(pages) + static_count} files in {config.output_dir}")
