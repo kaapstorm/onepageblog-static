@@ -1,7 +1,7 @@
 import tempfile
 from pathlib import Path
 
-from onepageblog.writer import write
+from onepageblog.writer import clean_stale_posts, write
 
 
 
@@ -41,5 +41,23 @@ def test_write_creates_output_dir_if_missing():
         d = Path(tmp) / "new_output"
         write({"index.html": "hello"}, d)
         assert (d / "index.html").read_text() == "hello"
+
+
+def test_clean_stale_posts_removes_missing_slugs():
+    with tempfile.TemporaryDirectory() as tmp:
+        d = Path(tmp)
+        (d / "posts" / "keep").mkdir(parents=True)
+        (d / "posts" / "keep" / "index.html").write_text("x")
+        (d / "posts" / "stale").mkdir(parents=True)
+        (d / "posts" / "stale" / "index.html").write_text("x")
+        removed = clean_stale_posts(d, ["keep"])
+        assert removed == ["stale"]
+        assert (d / "posts" / "keep").is_dir()
+        assert not (d / "posts" / "stale").exists()
+
+
+def test_clean_stale_posts_with_no_posts_dir():
+    with tempfile.TemporaryDirectory() as tmp:
+        assert clean_stale_posts(Path(tmp), ["anything"]) == []
 
 

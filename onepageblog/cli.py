@@ -6,7 +6,7 @@ from pathlib import Path
 from .config import load_config
 from .posts import load_posts
 from .renderer import copy_static, render
-from .writer import write
+from .writer import clean_stale_posts, write
 
 
 def main() -> None:
@@ -32,4 +32,7 @@ def main() -> None:
     pages = render(config, posts)
     write(pages, config.output_dir)
     static_count = copy_static(config.output_dir)
+    removed = clean_stale_posts(config.output_dir, (p.slug for p in posts))
     print(f"Generated {len(pages) + static_count} files in {config.output_dir}")
+    if removed:
+        print(f"Removed {len(removed)} stale post(s): {', '.join(removed)}")
