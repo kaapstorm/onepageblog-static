@@ -71,6 +71,18 @@ def test_base_url_strips_trailing_slash_from_site_url():
     assert config.base_url == "https://example.com/"
 
 
+def test_invalid_site_url_raises():
+    with tempfile.TemporaryDirectory() as tmp:
+        path = Path(tmp) / "config.toml"
+        path.write_text(
+            'site_title = "T"\n'
+            'site_description = "D"\n'
+            'site_url = "example.com"\n'
+        )
+        with pytest.raises(ValueError, match="site_url"):
+            load_config(path)
+
+
 def test_missing_field_raises():
     with tempfile.TemporaryDirectory() as tmp:
         path = Path(tmp) / "config.toml"

@@ -19,7 +19,7 @@ def main() -> None:
 
     try:
         config = load_config(args.config)
-    except (KeyError, OSError, tomllib.TOMLDecodeError) as e:
+    except (KeyError, OSError, ValueError, tomllib.TOMLDecodeError) as e:
         print(f"Error loading config: {e}", file=sys.stderr)
         sys.exit(1)
 
