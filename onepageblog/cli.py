@@ -1,5 +1,6 @@
 import argparse
 import sys
+import tomllib
 from pathlib import Path
 
 from .config import load_config
@@ -18,13 +19,13 @@ def main() -> None:
 
     try:
         config = load_config(args.config)
-    except (KeyError, FileNotFoundError) as e:
+    except (KeyError, OSError, tomllib.TOMLDecodeError) as e:
         print(f"Error loading config: {e}", file=sys.stderr)
         sys.exit(1)
 
     try:
         posts = load_posts(config.posts_dir)
-    except ValueError as e:
+    except (OSError, ValueError) as e:
         print(f"Error loading posts: {e}", file=sys.stderr)
         sys.exit(1)
 
