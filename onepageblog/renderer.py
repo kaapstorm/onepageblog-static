@@ -1,3 +1,5 @@
+from datetime import date, datetime, time, timezone
+from email.utils import format_datetime
 from pathlib import Path
 
 from jinja2 import Environment, PackageLoader
@@ -7,13 +9,9 @@ from .posts import Post
 
 _STATIC_DIR = Path(__file__).parent / "static"
 
-_DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-_MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-           'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
-
-def _rfc822_date(d):
-    return f"{_DAYS[d.weekday()]}, {d.day:02d} {_MONTHS[d.month - 1]} {d.year} 00:00:00 +0000"
+def _rfc822_date(d: date) -> str:
+    return format_datetime(datetime.combine(d, time.min, tzinfo=timezone.utc))
 
 
 def render(config: Config, posts: list[Post]) -> dict[str, str | bytes]:
