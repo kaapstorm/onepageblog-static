@@ -65,6 +65,14 @@ Post content goes here. Markdown is supported.
 
 The filename (without `.md`) becomes the URL slug. Filenames must be unique.
 
+Markdown is rendered with the [`extra`][extra] extension set, which
+includes `md_in_html` and preserves raw HTML in post bodies. Since
+post output is emitted verbatim into the generated pages, anything you
+write in a post — including raw `<script>` or `<iframe>` tags — will
+be served as-is. Treat post authors as trusted.
+
+[extra]: https://python-markdown.github.io/extensions/extra/
+
 ## Usage
 
 ```bash
