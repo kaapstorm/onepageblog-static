@@ -123,6 +123,20 @@ def test_empty_frontmatter_raises():
             load_posts(d)
 
 
+def test_datetime_date_is_rejected():
+    with tempfile.TemporaryDirectory() as tmp:
+        d = Path(tmp)
+        make_post_file(d, "datetime-date.md", """\
+---
+title: Has Time
+date: 2024-03-15T12:00:00Z
+author: Norman
+---
+""")
+        with pytest.raises(ValueError, match="date"):
+            load_posts(d)
+
+
 def test_invalid_date_type_raises():
     with tempfile.TemporaryDirectory() as tmp:
         d = Path(tmp)
