@@ -2,23 +2,11 @@
 
 ## Testing
 
-Uses pytest + pytest-unmagic. Fixtures are explicit imports — **import from
-`unmagic`, not `pytest_unmagic`**:
-
-```python
-from unmagic import fixture
-
-@fixture
-def my_fixture():
-    yield value
-
-def test_something():
-    val = my_fixture()   # calling fixture() triggers setup; no @use needed
-    assert val == expected
-```
-
-`tests/conftest.py` installs an unmagic fence that warns if any test uses
-magic (name-matching) pytest fixtures.
+Uses [testsweet](https://test.pypi.org/project/testsweet/). Mark tests with
+`@test` (functions or classes). Class-style tests can implement the
+context-manager protocol for shared setup; the runner enters the class once
+per class. Use `catch_exceptions()` to assert raised exceptions, and
+`@test_params` for parametrized tests. Run with `uv run python -m testsweet`.
 
 ## Gotchas
 

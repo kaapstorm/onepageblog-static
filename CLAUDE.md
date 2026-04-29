@@ -8,7 +8,7 @@ commands.
 
 - Install (dev): `uv pip install -e ".[dev]"`
 - Python: `uv run python ...`
-- Run tests: `uv run pytest tests/ -v`
+- Run tests: `uv run python -m testsweet`
 - Generate a site: `uv run onepageblog path/to/config.toml`
   Or: `uv run python -m onepageblog path/to/config.toml`
 
