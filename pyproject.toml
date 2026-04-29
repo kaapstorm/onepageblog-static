@@ -14,8 +14,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
-    "pytest",
-    "pytest-unmagic",
+    "testsweet",
 ]
 
 [project.scripts]
@@ -27,3 +26,15 @@ include = ["onepageblog*"]
 
 [tool.setuptools.package-data]
 onepageblog = ["templates/*", "static/*", "static/fonts/*"]
+
+[tool.uv.sources]
+testsweet = { index = "testpypi" }
+
+[[tool.uv.index]]
+name = "testpypi"
+url = "https://test.pypi.org/simple/"
+explicit = true
+
+[tool.testsweet.discovery]
+include_paths = ["tests"]
+test_files = ["*.py"]
