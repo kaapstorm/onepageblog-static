@@ -2,9 +2,7 @@
 
 ## Commands
 
-The project uses a virtualenv in `.venv/` managed with uv. Activate it
-with `source .venv/bin/activate`. Alternatively use `uv run ...` before
-commands.
+Use `uv run ...` before commands to execure them in the uv virtualenv.
 
 - Install (dev): `uv pip install -e ".[dev]"`
 - Python: `uv run python ...`
@@ -40,3 +38,10 @@ and `date` must be an unquoted `YYYY-MM-DD` value so PyYAML parses it as a
 `datetime.date`.
 
 See `CONTRIBUTING.md` for testing conventions and gotchas.
+
+## File locations
+
+| File                 | Path                                           |
+|----------------------|------------------------------------------------|
+| Design specs         | claude/specs/YYYY-MM-DD_design-name.md         |
+| Implementation plans | claude/plans/YYYY-MM-DD_implementation-name.md |
