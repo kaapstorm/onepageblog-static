@@ -1,11 +1,13 @@
 import tempfile
 from pathlib import Path
 
+from testsweet import test
+
 from onepageblog.writer import clean_stale_posts, write
 
 
-
-def test_write_creates_files():
+@test
+def write_creates_files():
     with tempfile.TemporaryDirectory() as tmp:
         d = Path(tmp)
         write(
@@ -21,14 +23,16 @@ def test_write_creates_files():
         assert (d / "my-post" / "ajax.html").read_text() == "<p>body</p>"
 
 
-def test_write_creates_nested_subdirectories():
+@test
+def write_creates_nested_subdirectories():
     with tempfile.TemporaryDirectory() as tmp:
         d = Path(tmp)
         write({"deep/nested/file.html": "content"}, d)
         assert (d / "deep" / "nested" / "file.html").read_text() == "content"
 
 
-def test_write_overwrites_existing_file():
+@test
+def write_overwrites_existing_file():
     with tempfile.TemporaryDirectory() as tmp:
         d = Path(tmp)
         (d / "index.html").write_text("old content")
@@ -36,14 +40,16 @@ def test_write_overwrites_existing_file():
         assert (d / "index.html").read_text() == "new content"
 
 
-def test_write_creates_output_dir_if_missing():
+@test
+def write_creates_output_dir_if_missing():
     with tempfile.TemporaryDirectory() as tmp:
         d = Path(tmp) / "new_output"
         write({"index.html": "hello"}, d)
         assert (d / "index.html").read_text() == "hello"
 
 
-def test_clean_stale_posts_removes_missing_slugs():
+@test
+def clean_stale_posts_removes_missing_slugs():
     with tempfile.TemporaryDirectory() as tmp:
         d = Path(tmp)
         (d / "posts" / "keep").mkdir(parents=True)
@@ -56,8 +62,7 @@ def test_clean_stale_posts_removes_missing_slugs():
         assert not (d / "posts" / "stale").exists()
 
 
-def test_clean_stale_posts_with_no_posts_dir():
+@test
+def clean_stale_posts_with_no_posts_dir():
     with tempfile.TemporaryDirectory() as tmp:
         assert clean_stale_posts(Path(tmp), ["anything"]) == []
-
-
