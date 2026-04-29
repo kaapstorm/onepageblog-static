@@ -1,7 +1,7 @@
 import tempfile
 from pathlib import Path
 
-import pytest
+from testsweet import catch_exceptions, test
 
 from onepageblog.config import Config, load_config
 
@@ -15,7 +15,8 @@ output_dir = "output"
 """
 
 
-def test_load_config_fields():
+@test
+def load_config_fields():
     with tempfile.TemporaryDirectory() as tmp:
         path = Path(tmp) / "config.toml"
         path.write_text(VALID_TOML)
@@ -26,7 +27,8 @@ def test_load_config_fields():
     assert config.site_url == "https://example.com"
 
 
-def test_load_config_resolves_paths_relative_to_config():
+@test
+def load_config_resolves_paths_relative_to_config():
     with tempfile.TemporaryDirectory() as tmp:
         path = Path(tmp) / "config.toml"
         path.write_text(VALID_TOML)
@@ -35,7 +37,8 @@ def test_load_config_resolves_paths_relative_to_config():
     assert config.output_dir == Path(tmp) / "output"
 
 
-def test_load_config_defaults_paths():
+@test
+def load_config_defaults_paths():
     minimal_toml = (
         'site_title = "Test Blog"\n'
         'site_description = "A test blog"\n'
@@ -49,7 +52,8 @@ def test_load_config_defaults_paths():
     assert config.output_dir == Path(tmp) / "_output"
 
 
-def test_base_url_trailing_slash():
+@test
+def base_url_trailing_slash():
     config = Config(
         site_title="T",
         site_description="D",
@@ -60,7 +64,8 @@ def test_base_url_trailing_slash():
     assert config.base_url == "https://example.com/"
 
 
-def test_base_url_strips_trailing_slash_from_site_url():
+@test
+def base_url_strips_trailing_slash_from_site_url():
     config = Config(
         site_title="T",
         site_description="D",
@@ -71,7 +76,8 @@ def test_base_url_strips_trailing_slash_from_site_url():
     assert config.base_url == "https://example.com/"
 
 
-def test_invalid_site_url_raises():
+@test
+def invalid_site_url_raises():
     with tempfile.TemporaryDirectory() as tmp:
         path = Path(tmp) / "config.toml"
         path.write_text(
@@ -79,11 +85,14 @@ def test_invalid_site_url_raises():
             'site_description = "D"\n'
             'site_url = "example.com"\n'
         )
-        with pytest.raises(ValueError, match="site_url"):
+        with catch_exceptions() as excs:
             load_config(path)
+    assert type(excs[0]) is ValueError
+    assert "site_url" in str(excs[0])
 
 
-def test_missing_field_raises():
+@test
+def missing_field_raises():
     with tempfile.TemporaryDirectory() as tmp:
         path = Path(tmp) / "config.toml"
         path.write_text(
@@ -92,5 +101,6 @@ def test_missing_field_raises():
             'posts_dir = "posts"\n'
             'output_dir = "output"\n'
         )
-        with pytest.raises(KeyError):
+        with catch_exceptions() as excs:
             load_config(path)
+    assert type(excs[0]) is KeyError
